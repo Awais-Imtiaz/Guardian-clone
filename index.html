@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Guardian clone</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Georgia, serif;
+        }
+        
+        body {
+            background: whitesmoke;
+            color: black;
+            line-height: 1.5;
+        }
+        
+                a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        header {
+            background: darkblue;
+            color: white;
+            text-align: right;
+        }
+        
+        .main-nav {
+            background: darkblue;
+            color: white;
+        }
+        
+        .header-container, .nav-container, 
+        .main-container, .footer-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .logo {
+    
+            font-size : 2rem;
+            font-weight : bold;
+            padding : 0.5rem 0;
+             color :white
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .nav-button {
+            background: darkblue;
+            color: white;
+            border: 1px solid black;
+            padding: 0.5rem 1rem;
+            border-radius: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .support-button {
+            background: yellow;
+            color: darkblue;
+            border: none;
+        }
+        
+        
+        .nav-container {
+            display: flex;
+            overflow-x: auto;
+            padding: 0.75rem 0;
+        }
+        
+        .nav-item {
+            padding: 0 0.5rem;
+            margin-right: 1rem;
+            white-space: nowrap;
+        }
+        
+        .nav-item.active {
+            border-bottom: 4px solid yellow;
+        }
+        
+        .main-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin: 1rem auto;
+        }
+        
+        .headline-section, .news-card {
+            border-top: 1px solid silver;
+            padding-top: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .headline-image {
+            width: 60%;
+            height: 250px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+        
+        .news-card-image {
+            width: 60%;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+        
+        .headline-tag, .news-card-tag {
+            color: red;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .headline-title {
+            font-size: 2.5rem;
+            line-height: 1.1;
+            margin-bottom: 0.75rem;
+        }
+        
+        .headline-summary {
+            font-size: 1.1rem;
+            color: dimgray;
+            margin-bottom: 1rem;
+        }
+        
+        .headline-meta {
+            color: gray;
+            font-size: 0.9rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .headline-meta > div {
+            display: inline-block;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .news-card-title {
+            font-size: 1.25rem;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar {
+            border-left: 1px solid silver;
+            padding-left: 1.5rem;
+        }
+        
+        .sidebar-heading {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            padding-top: 0.5rem;
+            border-top: 1px solid silver;
+        }
+        
+        .sidebar-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid silver;
+        }
+        
+        .sidebar-item-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .sidebar-item-meta {
+            color: gray;
+            font-size: 0.85rem;
+        }
+        
+        footer {
+            background: darkblue;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: lightgray;
+            font-size: 0.9rem;
+        }
+        
+        .copyright {
+            border-top: 1px solid slateblue;
+            padding-top: 1rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    
+    <header>
+        <div class="header-container">
+            <div style="display: inline-block;">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -3 300 100" fill="#ffffff" focusable="false" aria-hidden="true" style="width: 300px; height: auto;">
+    <path d="M0 70.8c0-19.5 13-26.4 27.3-26.4 6.1 0 12 1 15.1 2.3l.3 13.6h-1.4L33 47.2c-1.5-.7-2.8-.9-5.4-.9-7.6 0-11.5 8.8-11.4 23.3.1 17.3 3.1 25.1 10.2 25.1 1.8 0 3.2-.2 4.2-.7V75.5l-4.7-2.7v-1.5h22.5V73l-4.6 2.5v18.3a50.1 50.1 0 0 1-17 2.9C10.5 96.7 0 89 0 70.8Z"/>
+    <path d="m142.8 57.9 1.2.1v11h.3c1.6-8 5.2-11 9.5-11 .7 0 1.5 0 1.9.2v11.2c-.7-.2-2-.2-3.1-.2-3.4 0-6 .6-8.2 1.6v21.7l3.4 1.9v1.4h-19.5v-1.4l3.5-2V63l-4.1-1.2v-1l15-2.8Z"/>
+    <path d="M110.2 74v-4.9c0-7.4-1.6-9.9-6.2-9.9l-1.6.2-8.2 11h-1.1V60.3c3.5-1.1 7.9-2.4 13.7-2.4 10 0 15.8 2.8 15.8 11.1v24l3.6 1v1c-1.4.8-4.2 1.6-7.3 1.6-5 0-7.3-1.6-8.4-4.3h-.4c-2 2.8-5 4.4-9.7 4.4-6 0-10-3.7-10-10S94.2 77 102 75.5l8.1-1.6Zm0 16.6V75.8l-2.5.2c-4 .3-5.3 2.8-5.3 8.3 0 6 2 7.6 4.7 7.6 1.5 0 2.4-.5 3.1-1.3Z"/>
+    <path d="M47.5 61.7v-1.1l15-2.7 1.7.2v29.6c0 3.6 1.7 4.7 4.6 4.7 1.9 0 3.6-.7 4.9-2.3V63.5l-4.1-1.8v-1.1l15-2.7 1.6.1v34l4 1.7v1l-14.9 1.9-1.5-.1V92h-.4a16.8 16.8 0 0 1-11.3 4.7c-7.2 0-10.5-4.2-10.5-10.7V63.5l-4.1-1.8Z"/>
+    <path d="M261.5 92.5V63l-4.2-1.4v-1.5l15-2.7h1.5V62h.5c3.2-2.9 8-4.7 12.8-4.7 6.5 0 9.4 3 9.4 10v25.1l3.5 2v1.4h-19.5v-1.4l3.5-2V68c0-3.8-1.7-5.3-4.8-5.3-2 0-3.6.5-5.1 1.6v28.3l3.4 1.9v1.4h-19.6v-1.4l3.6-2Z"/>
+    <path d="m214 57.8 1.4.2v34.5l3.4 1.9v1.4h-19.5v-1.4l3.5-2v-29l-4.2-1.6v-1.2l15.5-2.8Zm1.5-9.3c0 3.7-3.1 6.4-6.7 6.4a6.4 6.4 0 0 1-6.6-6.4c0-3.6 2.9-6.4 6.6-6.4 3.6 0 6.7 2.8 6.7 6.4Z"/>
+    <path d="M239.8 74v-4.9c0-7.4-1.7-9.9-6.2-9.9l-1.6.2-8.2 11h-1.1V60.3c3.5-1.1 7.9-2.4 13.7-2.4 10 0 15.8 2.8 15.8 11.1v24l3.6 1v1c-1.4.8-4.2 1.6-7.4 1.6-5 0-7.3-1.6-8.4-4.3h-.3c-2 2.8-5 4.4-9.7 4.4-6 0-10-3.7-10-10s3.8-9.6 11.7-11.1l8-1.6Zm0 16.6V75.8l-2.5.2c-4 .3-5.4 2.8-5.4 8.3 0 6 2 7.6 4.8 7.6 1.5 0 2.4-.5 3-1.3Z"/>
+    <path d="M180.6 58.8V47.2l-4.1-1.4v-1l15.2-2.7 1.5.2V92l4.2 1.5v1.3l-15 2-1.2-.2v-4h-.4a13.4 13.4 0 0 1-10 4.1c-8.1 0-14.1-6.2-14.1-19 0-13.5 7-20 17.5-20 3 0 5.3.5 6.4 1.1Zm0 31.8V61c-1-.6-1.7-1.4-4.2-1.3-4 .2-6.6 6.3-6.6 17.2 0 9.8 1.9 15.3 7.3 15.1 1.5 0 2.7-.6 3.5-1.3Z"/>
+    <path d="m68.1 51.6 5.2-2.7V8.5h-4L60 21.1h-1.1l.6-14h41.3l.6 14H100L90.8 8.5h-4v40.3l5.2 2.7V53H68.1v-1.3Z"/>
+    <path d="M105.4 49.8V5l-4-1.6v-.8L115.9 0h1.5v21.2l.4-.4c3.2-2.8 7.8-4.5 12.4-4.5 6.3 0 9.1 3.5 9.1 10.2v23.3l3.4 1.8V53h-18.9v-1.4l3.4-1.8V26.4c0-3.7-1.6-5.1-4.6-5.1a8 8 0 0 0-5 1.6v27l3.3 1.8V53h-19v-1.3l3.5-2Z"/>
+    <path d="M153.7 36c.4 7.4 3.7 13.1 11.6 13.1 3.8 0 6.5-1.7 9-3v1.4c-1.9 2.7-6.9 6.5-13.8 6.5-12.2 0-18.5-6.8-18.5-18.5 0-11.5 6.8-18.6 17.9-18.6 10.3 0 15.7 5.2 15.7 18.8v.3h-21.9Zm-.2-1.7 10.8-.6c0-9.2-1.6-15.3-4.8-15.3-3.3 0-6 7-6 16Z"/>
+  </svg>
+</div>
+</div></div>
+            <div class="nav-buttons">
+                <button class="nav-button">Search</button>
+                <button class="nav-button support-button">Support us</button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="#" class="nav-item active">News</a>
+            <a href="#" class="nav-item">Opinion</a>
+            <a href="#" class="nav-item">Sport</a>
+            <a href="#" class="nav-item">Culture</a>
+            <a href="#" class="nav-item">Lifestyle</a>
+        </div>
+    </nav>
+
+    
+    <main class="main-container">
+        <div class="content">
+            
+            <section class="headline-section">
+                <img src="messi.jpg" 
+                     alt="Messi crying over loss in semifinals of champions league" 
+                     class="headline-image">
+                <div class="headline-tag">Headlines</div>
+                <h1 class="headline-title">FC Bayern Munich destroys the FC Barcelona team 8 - 2 in the UCL semi finals</h1>
+                <p class="headline-summary">Messi decides not to retire even after this humiliation in ucl semi finals.Fans protes outside his house</p>
+                <div class="headline-meta">
+                    <div>2h ago</div>
+                    <div aria-hidden="true">|</div>
+                    <div>Politics</div>
+                </div>
+            </section>
+
+            
+            <div class="news-grid">
+                <div class="news-card">
+                    <img src="barca.webp" 
+                         alt="Messi Sliding" 
+                         class="news-card-image">
+                    <div class="news-card-tag">Football</div>
+                    <h2 class="news-card-title">Messi decides to sleep during Match.</h2>
+                </div>
+                
+                <div class="news-card">
+                    <img src="ballondors.webp" 
+                         alt="Ronaldo with five Ballondors" 
+                         class="news-card-image">
+                    <div class="news-card-tag">Ballondors</div>
+                    <h2 class="news-card-title">Cristiano Ronaldo wins his %th ballondor</h2>
+                </div>
+                
+                <div class="news-card">
+                    <img src="spain.avif" 
+                         alt="Portugal winning Nations league" 
+                         class="news-card-image">
+                    <div class="news-card-tag">Nations League</div>
+                    <h2 class="news-card-title">Portugal wins NAtion league 2025 with Ronaldo scoring</h2>
+                </div>
+                
+                <div class="news-card">
+                    <img src="ronaldo.jpeg" 
+                         alt="Ronaldo" 
+                         class="news-card-image">
+                    <div class="news-card-tag">Legend</div>
+                    <h2 class="news-card-title">Ronaldo destroys Fc Barcelona in the super cup Final takig revenge</h2>
+                </div>
+                
+                <div class="news-card">
+                    <img src="portugal.webp" 
+                         alt="Spain National team" 
+                         class="news-card-image">
+                    <div class="news-card-tag">More Football</div>
+                    <h2 class="news-card-title">Spain wins the Nations league defeating the defending champions with ease</h2>
+                </div>
+                
+            </div>
+        </div>
+
+        <aside class="sidebar">
+            <section class="sidebar-section">
+                <h2 class="sidebar-heading">Most viewed</h2>
+                <div class="sidebar-item">
+                    <h3 class="sidebar-item-title">Barcelona getting thrashed by Bayern Munich</h3>
+                    <div class="sidebar-item-meta">Football • 3h ago</div>
+                </div>
+                <div class="sidebar-item">
+                    <h3 class="sidebar-item-title">Ilia Topuria knocksout Charles Oliviera</h3>
+                    <div class="sidebar-item-meta">UFC • 5h ago</div>
+                </div>
+                <div class="sidebar-item">
+                    <h3 class="sidebar-item-title">Extreme heat wave in Pakistan</h3>
+                    <div class="sidebar-item-meta">Weather • 7h ago</div>
+                </div>
+            </section>
+            
+            <section class="sidebar-section">
+                <h2 class="sidebar-heading">Opinion</h2>
+                <div class="sidebar-item">
+                    <h3 class="sidebar-item-title">Messi must retire before it becomes to embarassing for him</h3>
+                    <div class="sidebar-item-meta">By Awais Imtiaz</div>
+                </div>
+                <div class="sidebar-item">
+                    <h3 class="sidebar-item-title">Islam Makhachev must come back and regain hi LightWeight championship</h3>
+                    <div class="sidebar-item-meta">By Joe Rogan</div>
+                </div>
+            </section>
+            <section class="sidebar-section">
+                <div class = "sidebar-item">
+             <h2 class = "sidebar-heading">Cartoon</h2>
+             <h3 class = "sidebar-item-title">Looney toons are one of the best cartoons ever produced</h3>
+             <div class="sidebar-item-meta">By Farhan Nisar</div>   
+                    </div>
+             <div class = "sidebar-item">
+             <h3 class = "sidebar-item-title">Ben10 are also one of the best cartoons ever produced</h3>
+             <div class="sidebar-item-meta">By Hamza Ahmed</div>   
+                    </div>       
+            </section>
+        </aside>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>News</h3>
+                <ul class="footer-links">
+                    <li><a href="#">World</a></li>
+                    <li><a href="#">Business</a></li>
+                    <li><a href="#">Environment</a></li>
+                    <li><a href="#">Science</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Sport</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Football</a></li>
+                    <li><a href="#">Cricket</a></li>
+                    <li><a href="#">Tennis</a></li>
+                    <li><a href="#">Cycling</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Others</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Film</a></li>
+                    <li><a href="#">Music</a></li>
+                    <li><a href="#">TV & Radio</a></li>
+                    <li><a href="#">Books</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>More</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Complaints</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#"><abbr title = "Frequently Asked Questions">FAQs</abbr></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2023 Guardian News. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>
